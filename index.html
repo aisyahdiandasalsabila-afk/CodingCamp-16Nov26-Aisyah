@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+
+    <!-- ══════ TOPBAR ══════ -->
+    <header class="topbar">
+      <div class="topbar__brand">
+        <i class="fa-solid fa-rocket"></i>
+        <span>Life Dashboard</span>
+      </div>
+      <button class="btn-icon" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark mode">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+    </header>
+
+    <!-- ══════ DASHBOARD ══════ -->
+    <main class="dashboard">
+
+      <!-- ── GREETING ── -->
+      <section class="card greeting-card">
+        <div class="greeting__left">
+          <p class="greeting__clock" id="digitalClock">00:00:00</p>
+          <p class="greeting__date"  id="currentDate">Monday, 1 January 2025</p>
+          <h1 class="greeting__msg">
+            <span id="greetingMessage">Good Morning</span>, <span id="greetingName">Friend</span> 👋
+          </h1>
+        </div>
+        <div class="greeting__right">
+          <p class="form-label">Your name</p>
+          <div class="input-row">
+            <input class="input" type="text" id="nameInput" placeholder="Enter your name…" maxlength="30" autocomplete="off" />
+            <button class="btn btn--primary" id="saveNameBtn">
+              <i class="fa-solid fa-check"></i> Save
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MIDDLE ROW ── -->
+      <div class="middle-row">
+
+        <!-- FOCUS TIMER -->
+        <section class="card timer-card">
+          <div class="card__header">
+            <h2><i class="fa-solid fa-stopwatch"></i> Focus Timer</h2>
+          </div>
+
+          <div class="timer-wrap">
+            <svg class="timer-ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-bg"       cx="60" cy="60" r="52" />
+              <circle class="ring-progress" cx="60" cy="60" r="52" id="timerProgress" />
+            </svg>
+            <div class="timer-inner">
+              <span class="timer-time"  id="timerDisplay">25:00</span>
+              <span class="timer-label" id="timerLabel">Focus</span>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn btn--primary"   id="timerStart"><i class="fa-solid fa-play"></i>  Start</button>
+            <button class="btn btn--secondary" id="timerPause" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+            <button class="btn btn--ghost"     id="timerReset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+          </div>
+
+          <div class="timer-custom">
+            <p class="form-label">Custom duration (min)</p>
+            <div class="input-row">
+              <input class="input input--sm" type="number" id="customMinutes" min="1" max="120" placeholder="25" />
+              <button class="btn btn--secondary" id="setTimerBtn">
+                <i class="fa-solid fa-clock-rotate-left"></i> Set
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- QUICK LINKS -->
+        <section class="card links-card">
+          <div class="card__header">
+            <h2><i class="fa-solid fa-link"></i> Quick Links</h2>
+          </div>
+
+          <form class="add-link-form" id="addLinkForm" novalidate>
+            <input class="input" type="text" id="linkName" placeholder="Website name" maxlength="30" autocomplete="off" />
+            <input class="input" type="url"  id="linkUrl"  placeholder="https://example.com" autocomplete="off" />
+            <button class="btn btn--primary" type="submit">
+              <i class="fa-solid fa-plus"></i> Add
+            </button>
+          </form>
+
+          <div class="links-grid" id="linksGrid"></div>
+        </section>
+
+      </div><!-- /middle-row -->
+
+      <!-- ── TO-DO LIST ── -->
+      <section class="card todo-card">
+        <div class="card__header">
+          <h2><i class="fa-solid fa-list-check"></i> To-Do List</h2>
+          <span class="todo-stats" id="todoStats">0 / 0 done</span>
+        </div>
+
+        <form class="add-task-form" id="addTaskForm" novalidate>
+          <input class="input" type="text" id="taskInput" placeholder="Add a new task…" maxlength="120" autocomplete="off" />
+          <button class="btn btn--primary" type="submit">
+            <i class="fa-solid fa-plus"></i> Add Task
+          </button>
+        </form>
+
+        <div class="todo-tabs" role="tablist">
+          <button class="tab tab--active" data-filter="all"       role="tab" aria-selected="true">All</button>
+          <button class="tab"             data-filter="active"    role="tab" aria-selected="false">Active</button>
+          <button class="tab"             data-filter="completed" role="tab" aria-selected="false">Completed</button>
+        </div>
+
+        <ul class="task-list" id="taskList" aria-label="Tasks"></ul>
+
+        <div class="empty-state" id="emptyState">
+          <i class="fa-regular fa-clipboard"></i>
+          <p>No tasks yet — add one above!</p>
+        </div>
+
+        <div class="todo-footer">
+          <button class="btn btn--ghost btn--sm" id="clearCompleted">
+            <i class="fa-solid fa-trash-can"></i> Clear completed
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ══════ TOAST ══════ -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- ══════ EDIT MODAL ══════ -->
+    <div class="modal-overlay" id="modalOverlay" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal">
+        <div class="modal__head">
+          <h3 id="modalTitle"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
+          <button class="btn-icon" id="closeModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal__body">
+          <input class="input" type="text" id="editTaskInput" placeholder="Update task…" maxlength="120" autocomplete="off" />
+        </div>
+        <div class="modal__foot">
+          <button class="btn btn--ghost"   id="cancelEdit">Cancel</button>
+          <button class="btn btn--primary" id="saveEdit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ FINISH OVERLAY ══════ -->
+    <div class="modal-overlay" id="timerFinishOverlay" aria-modal="true" role="dialog">
+      <div class="modal modal--center">
+        <div class="finish-icon"><i class="fa-solid fa-trophy"></i></div>
+        <h3 class="finish-title">Focus session complete!</h3>
+        <p class="finish-sub">Great work. Take a short break before the next session.</p>
+        <button class="btn btn--primary" id="closeFinish"><i class="fa-solid fa-check"></i> Got it</button>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
